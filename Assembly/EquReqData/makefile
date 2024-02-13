@@ -1,5 +1,5 @@
 #Program name
-PROG = 2_flagsfixed_ex5_13
+PROG = 1_AddInclude
 
 OBJS = ${PROG}.o
 
