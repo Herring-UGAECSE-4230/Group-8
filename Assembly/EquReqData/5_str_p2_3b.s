@@ -1,7 +1,8 @@
 @Deliverable 1: Describe the str instruction and the addressing type with the str instruction.
 @Deliverable 2: Show the register values after running the program.
 @ Deliverable: Add the classinclude.s include file with changes to last two lines.
-
+	
+	.include "classinclude.s"
 	.text
 	.global _start
 _start:
@@ -18,8 +19,8 @@ _start:
 	ldr	r0, =c
 	str	r3, [r0]
 
-	mov	r7, #1
-	svc	0
+	mov	r7, #sys_exit
+	svc	sys_restart_syscall
 
 	.data
 a:	.word	5

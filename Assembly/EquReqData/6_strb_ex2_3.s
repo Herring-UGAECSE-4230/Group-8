@@ -4,6 +4,7 @@
  	@ Deliverable: What does the .space compiler directive do?
 	@ Deliverable: Add the classinclude.s include file with changes to last two lines.
 
+	.include "classinclude.s"
 	.global _start
 _start:
 	mov	r1, #0x99	@ r1 = 0x99
@@ -26,8 +27,12 @@ _start:
 	mov	r1, #0x12	@ r1 = 0x12
 	strb	r1, [r6]	
 
-	mov	r7, #1
-	svc	0
+	ldr r6, =data_store @reset data pointer
+	ldr r2, [r6] @stores the first word of data in r2
+	ldrb r3, [r6, #4] @stores the last byte of data in r3
+
+	mov	r7, #sys_exit
+	svc	sys_restart_syscall
  
 	.data
  data_store: .space 8

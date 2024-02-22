@@ -6,8 +6,9 @@ val2	.req r2
 sum	.req r0
 	.text
 	.global _start
+	.include "classinclude.s"
 _start:	mov	val1, #0x25
 	mov	val2, #0x34
 	add	sum, val1, val2
-	mov	r7, #1
-	svc	0
+	mov	r7, #sys_exit
+	svc	sys_restart_syscall
