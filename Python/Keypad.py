@@ -61,7 +61,7 @@ def incState(): #Runs every minute when the clock turns
     if(state[1] == 10): 
         state[0] = state[0] + 1
         state[1] = 0
-    if(state[0] == 1 and state[1] == 2): #Changes AM to PM and vice versa at 12:00
+    if(state[0] == 1 and state[1] == 2 and state[2] == 0 and state[3] == 0): #Changes AM to PM and vice versa at 12:00
         am = not am
         state[0] = 1
         state[1] = 2
@@ -274,8 +274,12 @@ def startT(): #Runs the start menu.
                 print(state)
                 updateClock()
                 runTimer()
+                state = [0, 0, 0, 0]
+                updateClock()
             if(curValue == 'B'): #Runs the required functions for manual time.
                 addValues()
                 runTimer()
+                state = [0, 0, 0, 0]
+                updateClock()
 updateClock()
 startT()
