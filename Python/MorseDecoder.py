@@ -2,6 +2,7 @@ import RPi.GPIO as GPIO
 import time
 import numpy
 morseChars = {  #character list
+    '':'',
     '. -':'a',
     '- . . .':'b',
     '- . - .':'c',
@@ -38,23 +39,26 @@ morseChars = {  #character list
     '- - - . .':'8',
     '- - - - .':'9',
     '- - - - -':'0',
+    '- . -':'over',
+    '. - . - .':'out'
     }
 GPIO.setmode(GPIO.BCM) #Our algorithm is able to be within 1% error range for a length down to about 10 ms.
 Input = 17
-Output = 4
+#Output = 4 #unused
 SPEAKER_PIN = 2
 LED_PIN = 3
 GPIO.setup(SPEAKER_PIN, GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(LED_PIN, GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(Input, GPIO.IN)
-GPIO.setup(Output, GPIO.OUT, initial=GPIO.LOW)
+#GPIO.setup(Output, GPIO.OUT, initial=GPIO.LOW)
 sum = 0
 #while(True):
 #    GPIO.output(Output, 1)
 #    print(GPIO.input(Input))
 counter = 0
-output = ['- . - . -']
+output = '- . - . -   '
 print("Press down to start")
+ending = False
 while(GPIO.input(Input) == 0):
     pass
 anchor = time.time()
@@ -73,37 +77,35 @@ print(intr)
 curr = ""
 anchor = time.time()
 prev = GPIO.input(Input)
-arr = [[""]*100000]*100000
+currentWord = "" 
 co = 0
 ct = 0
+tabs = ""
+tabsBool = False
 ledOn = False
 outputFile = open('decoder output.txt', 'w')
 anchor2 = time.time()
-while(True):
+reading = True
+morseWord = ""
+outputFile.write(output + "| " + 'attention\n')
+while(reading):
     time.sleep(0.02)
     if(prev != GPIO.input(Input)):
         times = time.time() - anchor
-        #print(times)
+        #print(times)       
         prev = GPIO.input(Input)
         if(GPIO.input(Input) == 1):
             GPIO.output(2, 1)
             GPIO.output(3, 1)
             ledOn = True
-            #if(times >= intr*7):
-                #print('7 space')
-                #co = 0
-                #ct = ct + 1
-                #outputFile.write("\n")
-                #anchor = time.time()
-            if(times >= intr*2.5):
+            if(times >= intr*2): #next letter
                 #print('3 space')
                 co = co + 1
                 try:
-                    arr[ct][co] = morseChars[curr]
-                    print(morseChars[curr])
-                    outputFile.write(arr[ct][co])
+                    currentWord += morseChars[curr]
+                    morseWord += curr + "   "
                 except:
-                    print("word not found please try again")
+                    currentWord += "?"
                 curr = ""
                 anchor = time.time()
 #            elif(time <= 0.05):
@@ -112,11 +114,37 @@ while(True):
                 #print('space')
                 curr += " "
                 anchor = time.time()
+            if(times >= intr*7): #next word
+                print(morseWord)
+                print(currentWord)
+                if(len(morseWord.strip()) != 0):
+                    if(tabsBool):
+                        tabs = "    "
+                    if(ending):
+                        if(currentWord == 'out'):
+                            outputFile.write(morseWord + "| " + currentWord)
+                            reading = False
+                            break
+                    ending = False
+                    if(currentWord == 'over'):
+                     ending = True
+                     tabs = ""
+                    if('?' in currentWord):
+                        currentWord = '?'
+                    outputFile.write(tabs + morseWord + " | " + currentWord)
+                    curr = ""
+                    currentWord = ""
+                    morseWord = ""
+                    co = 0
+                    ct = ct + 1
+                    outputFile.write("\n")
+                    tabsBool = True
+                anchor = time.time()
         else:
             GPIO.output(2, 0)
             GPIO.output(3, 0)
             ledOn= False
-            if(times >= intr*2.5):
+            if(times >= intr*2):
                 #print('3 pressed')
                 curr += "-"
 #            elif(time <= 0.05):
@@ -131,5 +159,5 @@ while(True):
     if(time.time() - anchor2 > 0.25):
         anchor2 = time.time()
         print(curr)
-        #print(arr)
+        print(currentWord)
 outputFile.close()
