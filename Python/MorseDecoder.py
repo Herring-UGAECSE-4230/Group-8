@@ -61,7 +61,7 @@ anchor = time.time()
 print("Starting")
 prev = GPIO.input(Input)
 while(counter < 9):
-    time.sleep(0.05)
+    time.sleep(0.02)
     if(prev != GPIO.input(Input)):
         sum += time.time() - anchor
         counter += 1
@@ -90,12 +90,12 @@ while(True):
             GPIO.output(3, 1)
             ledOn = True
             #if(times >= intr*7):
-             #   print('7 space')
-             #   co = 0
-             #   ct = ct + 1
-             #   outputFile.write("\n")
-             #   anchor = time.time()
-            if(times >= intr*3):
+                #print('7 space')
+                #co = 0
+                #ct = ct + 1
+                #outputFile.write("\n")
+                #anchor = time.time()
+            if(times >= intr*2.5):
                 #print('3 space')
                 co = co + 1
                 try:
@@ -116,7 +116,7 @@ while(True):
             GPIO.output(2, 0)
             GPIO.output(3, 0)
             ledOn= False
-            if(times >= intr*3):
+            if(times >= intr*2.5):
                 #print('3 pressed')
                 curr += "-"
 #            elif(time <= 0.05):
@@ -131,4 +131,5 @@ while(True):
     if(time.time() - anchor2 > 0.25):
         anchor2 = time.time()
         print(curr)
+        #print(arr)
 outputFile.close()
