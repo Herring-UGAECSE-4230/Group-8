@@ -1,0 +1,22 @@
+For the linux GPIO program, we've included an GPIO_ON and ad GPIO_OFF folder.  The "On" turns on a GPIO.  The "Off" turns off a GPIO.
+
+Deliverables:
+THIS IS A GROUP PROJECT
+
+1) Run the GPIO On and the GPIO off separately to confirm that they work for you.
+2) Change the GPIO On and the GPIO off to turn on/off GPIO 22.  Show this working.
+3) Now, combine the two programs into one program so that you can generate a square wave.  Combine the two programs (Remove all the redundancies).
+Name the program Linux_asm_squarewave.  Show that you have
+GPIO 22 turning off and on with approximately a 1 second blink rate (1/2 second off, 1/2 second on).  This will require a delay loop or two, of course.
+Provide two variables at the top of your program that will set the on time and the off time. Name the two variables: On_time and Off_time. They cannot be in seconds.
+They must be in nanoseconds.  So, a 1 second delay would be 1,000,000,000 as an entry.  You will not have to show a square wave with a value needing more time than this.
+With the max value, you should be able to support a 2 second (50/50) square wave.  This will be the slowest.  You will find the fastest.
+4) Show the code loop that uses your On_time and Off_time for time delay.  Describe how many instruction cycles are run in your loop for each "tick" on the delay value entry.
+4) Run your program showing 1 Hz: 1 second (50/50), 1 second (25 on / 75 off).
+5) Run your program with 1Khz at (50/50 duty cycle).  You cannot see this on an LED.  You will need to look at Oscilloscope.  What are your two delay values for this?
+6) What is the fastest that you can run a square wave with your code?  Provide the delay values and the Oscilloscope output.
+7) Take data for your linux square wave generator.  What is the frequency range?  What is the dutycycle range?  Show this in data and graphs.
+You programmed xxx and measured yyy.
+8) How does this compare to your best results from the Python square wave project?
+9) Include all written responses on ELC and treat it like a Phython project for requirements in your writeup.
+10) Make sure your final code in on Github and is named Linux_asm_squarewave_final.
